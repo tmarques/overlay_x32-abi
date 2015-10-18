@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE repositories SYSTEM "/dtd/repositories.dtd">
+<repositories xmlns="" version="1.0">
+  <repo quality="experimental" status="unofficial">
+    <name>x32</name>
+    <description>x32 ABI related ebuilds</description>
+    <homepage>http://www.tmarques.com/contact</homepage>
+    <owner>
+      <name>Tiago Marques</name>
+    </owner>
+  </repo>
+</repositories>
