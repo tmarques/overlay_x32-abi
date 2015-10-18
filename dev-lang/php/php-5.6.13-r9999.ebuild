@@ -277,7 +277,7 @@ php_set_ini_dir() {
 
 src_prepare() {
 	# Fix various assembly x32 ABI bugs
-	epatch "${FILESDIR}"/zend-operators-x32.patch
+	epatch "${FILESDIR}"/zend_operators-x32.patch
 
 	# USE=sharedmem (session/mod_mm to be exact) tries to mmap() this path
 	# ([empty session.save_path]/session_mm_[sapi][gid].sem)
