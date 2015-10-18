@@ -210,10 +210,6 @@ esac
 PHP_INI_UPSTREAM="php.ini-${PHP_INI_VERSION}"
 PHP_INI_FILE="php.ini"
 
-PATCHES=(
-	"${FILESDIR}"/zend-operators-x32.patch
-)
-
 want_apache
 
 pkg_setup() {
@@ -280,6 +276,9 @@ php_set_ini_dir() {
 }
 
 src_prepare() {
+	# Fix various assembly x32 ABI bugs
+	epatch "${FILESDIR}"/zend-operators-x32.patch
+
 	# USE=sharedmem (session/mod_mm to be exact) tries to mmap() this path
 	# ([empty session.save_path]/session_mm_[sapi][gid].sem)
 	# there is no easy way to circumvent that, all php calls during
