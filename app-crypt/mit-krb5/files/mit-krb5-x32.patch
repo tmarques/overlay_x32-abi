@@ -1,12 +1,15 @@
-diff -ru krb5-1.13.1.orig/src/configure krb5-1.13.1/src/configure
---- krb5-1.13.1.orig/src/configure	2015-02-12 11:17:07.000000000 +0800
-+++ krb5-1.13.1/src/configure	2015-02-28 16:25:56.867892499 +0800
-@@ -8687,7 +8687,7 @@
-     *-*-linux* | *-*-gnu* | *-*-*bsd* | *-*-solaris*)
- 	# All Unix-like platforms need -D__linux__ for iaesx64.s to
- 	# use the System V x86-64 calling convention.
--	aesni_flags="-D__linux__ -f elf -m $aesni_machine"
-+	aesni_flags="-D__linux__ -f elfx32 -m x32"
+--- configure.old	2016-06-20 16:25:46.320188215 +0100
++++ configure	2016-06-20 17:24:15.406039526 +0100
+@@ -8793,6 +8793,12 @@
+ 	aesni_obj=iaesx86.o
+ 	aesni_machine=x86
  	;;
-     esac
-     if test "x$aesni_obj" != x && test "x$aesni_flags" != x; then
++    x86_64-*-*-gnux32)
++    	# x86 assembly is slower but should run fine, since the 64 bit ABI
++	# assumes 64 bit integers, it may cause overflows.
++    	aesni_obj=iaesx86.o
++	aesni_machine=x32
++    	;;
+     x86_64-*)
+ 	aesni_obj=iaesx64.o
+ 	aesni_machine=amd64
