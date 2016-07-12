@@ -1,7 +1,6 @@
-diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
---- /tmp/php-5.5.25/Zend/zend_operators.h	2015-05-14 01:02:08.000000000 +0100
-+++ Zend/zend_operators.h	2015-05-24 22:53:54.000000000 +0100
-@@ -506,8 +506,8 @@
+--- a/Zend/zend_operators.h	2016-06-22 02:50:40.000000000 +0100
++++ b/Zend/zend_operators.h	2016-07-12 17:02:18.000000000 +0100
+@@ -510,26 +510,26 @@
  static zend_always_inline int fast_increment_function(zval *op1)
  {
  	if (EXPECTED(Z_TYPE_P(op1) == IS_LONG)) {
@@ -12,7 +11,12 @@ diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
  			"incl (%0)\n\t"
  			"jno  0f\n\t"
  			"movl $0x0, (%0)\n\t"
-@@ -519,7 +519,7 @@
+ 			"movl $0x41e00000, 0x4(%0)\n\t"
+-			"movb %1, %c2(%0)\n"
++			"movl %1, %c2(%0)\n"
+ 			"0:"
+ 			:
+ 			: "r"(&op1->value),
  			  "n"(IS_DOUBLE),
  			  "n"(ZVAL_OFFSETOF_TYPE)
  			: "cc");
@@ -21,7 +25,14 @@ diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
  		__asm__(
  			"incq (%0)\n\t"
  			"jno  0f\n\t"
-@@ -549,7 +549,7 @@
+ 			"movl $0x0, (%0)\n\t"
+ 			"movl $0x43e00000, 0x4(%0)\n\t"
+-			"movb %1, %c2(%0)\n"
++			"movl %1, %c2(%0)\n"
+ 			"0:"
+ 			:
+ 			: "r"(&op1->value),
+@@ -553,26 +553,26 @@
  static zend_always_inline int fast_decrement_function(zval *op1)
  {
  	if (EXPECTED(Z_TYPE_P(op1) == IS_LONG)) {
@@ -30,7 +41,13 @@ diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
  		__asm__(
  			"decl (%0)\n\t"
  			"jno  0f\n\t"
-@@ -562,7 +562,7 @@
+ 			"movl $0x00200000, (%0)\n\t"
+ 			"movl $0xc1e00000, 0x4(%0)\n\t"
+-			"movb %1,%c2(%0)\n"
++			"movl %1,%c2(%0)\n"
+ 			"0:"
+ 			:
+ 			: "r"(&op1->value),
  			  "n"(IS_DOUBLE),
  			  "n"(ZVAL_OFFSETOF_TYPE)
  			: "cc");
@@ -39,7 +56,14 @@ diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
  		__asm__(
  			"decq (%0)\n\t"
  			"jno  0f\n\t"
-@@ -593,7 +593,7 @@
+ 			"movl $0x00000000, (%0)\n\t"
+ 			"movl $0xc3e00000, 0x4(%0)\n\t"
+-			"movb %1,%c2(%0)\n"
++			"movl %1,%c2(%0)\n"
+ 			"0:"
+ 			:
+ 			: "r"(&op1->value),
+@@ -597,19 +597,19 @@
  {
  	if (EXPECTED(Z_TYPE_P(op1) == IS_LONG)) {
  		if (EXPECTED(Z_TYPE_P(op2) == IS_LONG)) {
@@ -48,7 +72,21 @@ diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
  		__asm__(
  			"movl	(%1), %%eax\n\t"
  			"addl   (%2), %%eax\n\t"
-@@ -616,7 +616,7 @@
+ 			"jo     0f\n\t"     
+ 			"movl   %%eax, (%0)\n\t"
+-			"movb   %3, %c5(%0)\n\t"
++			"movl   %3, %c5(%0)\n\t"
+ 			"jmp    1f\n"
+ 			"0:\n\t"
+ 			"fildl	(%1)\n\t"
+ 			"fildl	(%2)\n\t"
+ 			"faddp	%%st, %%st(1)\n\t"
+-			"movb   %4, %c5(%0)\n\t"
++			"movl   %4, %c5(%0)\n\t"
+ 			"fstpl	(%0)\n"
+ 			"1:"
+ 			: 
+@@ -620,19 +620,19 @@
  			  "n"(IS_DOUBLE),
  			  "n"(ZVAL_OFFSETOF_TYPE)
  			: "eax","cc");
@@ -57,7 +95,21 @@ diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
  		__asm__(
  			"movq	(%1), %%rax\n\t"
  			"addq   (%2), %%rax\n\t"
-@@ -679,7 +679,7 @@
+ 			"jo     0f\n\t"     
+ 			"movq   %%rax, (%0)\n\t"
+-			"movb   %3, %c5(%0)\n\t"
++			"movl   %3, %c5(%0)\n\t"
+ 			"jmp    1f\n"
+ 			"0:\n\t"
+ 			"fildq	(%1)\n\t"
+ 			"fildq	(%2)\n\t"
+ 			"faddp	%%st, %%st(1)\n\t"
+-			"movb   %4, %c5(%0)\n\t"
++			"movl   %4, %c5(%0)\n\t"
+ 			"fstpl	(%0)\n"
+ 			"1:"
+ 			: 
+@@ -683,13 +683,13 @@
  {
  	if (EXPECTED(Z_TYPE_P(op1) == IS_LONG)) {
  		if (EXPECTED(Z_TYPE_P(op2) == IS_LONG)) {
@@ -66,7 +118,23 @@ diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
  		__asm__(
  			"movl	(%1), %%eax\n\t"
  			"subl   (%2), %%eax\n\t"
-@@ -706,7 +706,7 @@
+ 			"jo     0f\n\t"     
+ 			"movl   %%eax, (%0)\n\t"
+-			"movb   %3, %c5(%0)\n\t"
++			"movl   %3, %c5(%0)\n\t"
+ 			"jmp    1f\n"
+ 			"0:\n\t"
+ 			"fildl	(%2)\n\t"
+@@ -699,7 +699,7 @@
+ #else
+ 			"fsubp	%%st, %%st(1)\n\t"
+ #endif
+-			"movb   %4, %c5(%0)\n\t"
++			"movl   %4, %c5(%0)\n\t"
+ 			"fstpl	(%0)\n"
+ 			"1:"
+ 			: 
+@@ -710,13 +710,13 @@
  			  "n"(IS_DOUBLE),
  			  "n"(ZVAL_OFFSETOF_TYPE)
  			: "eax","cc");
@@ -75,3 +143,19 @@ diff -Nau /tmp/php-5.5.25/Zend/zend_operators.h Zend/zend_operators.h
  		__asm__(
  			"movq	(%1), %%rax\n\t"
  			"subq   (%2), %%rax\n\t"
+ 			"jo     0f\n\t"     
+ 			"movq   %%rax, (%0)\n\t"
+-			"movb   %3, %c5(%0)\n\t"
++			"movl   %3, %c5(%0)\n\t"
+ 			"jmp    1f\n"
+ 			"0:\n\t"
+ 			"fildq	(%2)\n\t"
+@@ -726,7 +726,7 @@
+ #else
+ 			"fsubp	%%st, %%st(1)\n\t"
+ #endif
+-			"movb   %4, %c5(%0)\n\t"
++			"movl   %4, %c5(%0)\n\t"
+ 			"fstpl	(%0)\n"
+ 			"1:"
+ 			: 

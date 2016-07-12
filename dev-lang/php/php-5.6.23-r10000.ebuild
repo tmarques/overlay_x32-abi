@@ -312,7 +312,7 @@ src_prepare() {
 
 	# Add user patches #357637
 	epatch_user
-	epatch "${FILESDIR}"/zend_operators-x32.patch
+	epatch "${FILESDIR}"/zend_operators_x32-5.patch
 
 	# Force rebuilding aclocal.m4
 	rm -f aclocal.m4 || die
