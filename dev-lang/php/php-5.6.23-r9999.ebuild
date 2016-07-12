@@ -6,7 +6,7 @@ EAPI=5
 
 inherit eutils autotools flag-o-matic versionator depend.apache apache-module libtool systemd
 
-KEYWORDS="alpha amd64 arm hppa ~ia64 ~mips ~ppc ppc64 ~s390 ~sh ~sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos"
+KEYWORDS="alpha amd64 ~arm hppa ~ia64 ~mips ~ppc ppc64 ~s390 ~sh ~sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos"
 
 function php_get_uri ()
 {
@@ -311,8 +311,8 @@ src_prepare() {
 	fi
 
 	# Add user patches #357637
-    epatch "${FILESDIR}"/zend_operators-x32.patch
 	epatch_user
+	epatch "${FILESDIR}"/zend_operators-x32.patch
 
 	# Force rebuilding aclocal.m4
 	rm -f aclocal.m4 || die
@@ -777,8 +777,8 @@ pkg_postinst() {
 	# supposed to remove that dead link per bug 572436.
 	eselect php cleanup || die
 
-	elog "Make sure that PHP_TARGETS in ${EPREFIX}/etc/make.conf includes"
-	elog "php${SLOT/./-} in order to compile extensions for the ${SLOT} ABI."
+	elog "To build extensions for this version of PHP, you will need to"
+	elog "add php${SLOT/./-} to your PHP_TARGETS USE_EXPAND variable."
 	elog
 	elog "This ebuild installed a version of php.ini based on"
 	elog "php.ini-${PHP_INI_VERSION}. You can choose which version of"
